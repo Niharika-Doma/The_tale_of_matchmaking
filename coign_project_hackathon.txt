@@ -1,0 +1,157 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    map<string, int> age;
+    map<string, vector<string>> preferences;
+    set<string> name;
+    map<string, string> gender;
+    string gender_name, name_user, name1, name2;
+    int age_num, a, b, flag;
+    vector<string> preference(3);
+    cout << "\n\n\n";
+    cout << "Now the menu is given:" << endl; // Menu is Shown Below
+
+abc:
+    cout << "1.Register User" << endl;                        // For Registration
+    cout << "2.Add Match" << endl;                            // For Searching Match
+    cout << "3.Suggest Matches" << endl;                      // To Suggest Matches
+    cout << "4.Suggest Matches using Decision Tree " << endl; // Suggests The best Matches
+    cout << "5.Close System " << endl
+         << endl; // To Close The Application
+    int ch;
+    // Directs to the options based on Chosen Choice
+    cout << "Choose an option:";
+    cin >> ch;
+    switch (ch)
+    {
+    case 1: // Registration Form
+        cout << "Enter name:";
+        cin >> name_user;
+        name.insert(name_user);
+        cout << "Enter age:";
+        cin >> age_num;
+        age[name_user] = age_num;
+        cout << "Enter gender:";
+        cin >> gender_name;
+        gender[name_user] = gender_name;
+        cout << "Enter preferences:";
+        for (int i = 0; i < 3; i++)
+        {
+            cin >> preference[i];
+        }
+        preferences[name_user] = preference;
+        cout << "User " << name_user << " registered successfully." << endl
+             << endl;
+        goto abc;
+    case 2:
+        cout << "Enter first user's name:";
+        cin >> name1;
+        cout << "Enter Second user's name: ";
+        cin >> name2;
+        // Checks wheather Candidate registered or not
+        if (name.find(name1) != name.end() && name.find(name2) != name.end())
+        {
+            // Checks For Opposite gender
+            if (gender[name1] != gender[name2])
+            {
+                cout << name1 << " and " << name2 << " are now matched." << endl
+                     << endl;
+            }
+            else
+            {
+                cout << name1 << " and " << name2 << " are not matched." << endl
+                     << endl;
+            }
+        }
+        else
+        {
+            cout << "Candidate till not registered." << endl
+                 << endl;
+        }
+        goto abc;
+    case 3: // Suggests match based on Age and Gender
+        cout << "Enter username:";
+        cin >> name1;
+        if (name.find(name1) != name.end())
+        {
+            for (auto it : name)
+            {
+                if (it != name1)
+                {
+                    name2 = it;
+                }
+            }
+            if (gender[name1] != gender[name2])
+            {
+                if ((gender[name1] == "Female" && age[name1] <= age[name2]) || (gender[name2] == "Female" && age[name2] <= age[name1]))
+                {
+                    cout << "Suggested matches for " << name1 << ":" << endl;
+                    cout << name2 << endl
+                         << endl;
+                }
+                else
+                {
+                    cout << "There are no Suggested Matches for " << name1 << endl
+                         << endl;
+                }
+            }
+            else
+            {
+                cout << "There are no Suggested Matches for " << name1 << endl
+                     << endl;
+            }
+        }
+        else
+        {
+            cout << "Search for candidate who registered." << endl
+                 << endl;
+        }
+        goto abc;
+    case 4: // Suggests match based on Preferences
+        cout << "Enter user name:";
+        cin >> name_user;
+        a = 0;
+        flag = 0;
+        //checks if the preferences matches or not
+        for (auto it : preferences)
+        {
+            b = a + 1;
+            for (auto i : preferences)
+            {
+                if (it.second[a] == i.second[b])
+                {
+                    flag = 1;
+                    cout << "Suggested matches for " << it.first << " using decision Tree:" << endl;
+                    cout << i.first << endl
+                         << endl;
+                    break;
+                }
+
+                b++;
+            }
+            if (flag == 1)
+            {
+                break;
+            }
+            a++;
+        }
+        if (flag == 0)
+        {
+            cout << "Matches are not Completely perfect for " << name_user << endl
+                 << endl;
+        }
+        goto abc;
+    case 5:
+        cout << "System Closed." << endl
+             << endl;
+        break;
+    default: // for invalid choice
+        cout << "Enter valid choice." << endl
+             << endl;
+    }
+
+    cout << "\n\n\n";
+    return 0;
+}
